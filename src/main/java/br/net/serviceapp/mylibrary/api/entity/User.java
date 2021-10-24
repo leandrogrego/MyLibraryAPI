@@ -8,24 +8,38 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String socialId;
+    private String provider;
     private String name;
+    private boolean enabled = true;
+    private String type = "user";
+    private String avatar_url;
     private String phone;
+    private boolean numberValidated;
     private String email;
-    private String urlAvatar;
-    private String token;
+    private boolean emailValidated;
     private Date lastAccess;
-    private List<Booke> books;
+    private List<Livro> books;
+    private Date created = new Date();
 
-    public List<Booke> getBooks() {
+    @JsonIgnore
+	private int code;
+    
+    @JsonIgnore
+    private String token;
+
+    public List<Livro> getBooks() {
         return books;
     }
-    public void setBooks(List<Booke> books) {
+    public void setBooks(List<Livro> books) {
         this.books = books;
     }
     public Date getLastAccess() {
@@ -55,17 +69,65 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getUrlAvatar() {
-        return urlAvatar;
-    }
-    public void setUrlAvatar(String urlAvatar) {
-        this.urlAvatar = urlAvatar;
-    }
-    public String getToken() {
-        return token;
-    }
     public void setToken(String token) {
         this.token = token;
+    }
+    public boolean checkToken(String token) {
+        return token.equals(this.token);
+    }
+    public String getSocialId() {
+        return socialId;
+    }
+    public void setSocialId(String socialId) {
+        this.socialId = socialId;
+    }
+    public String getProvider() {
+        return provider;
+    }
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+    public boolean isEnabled() {
+        return enabled;
+    }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+    public String getAvatar_url() {
+        return avatar_url;
+    }
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
+    }
+    public boolean isNumberValidated() {
+        return numberValidated;
+    }
+    public void setNumberValidated(boolean numberValidated) {
+        this.numberValidated = numberValidated;
+    }
+    public boolean isEmailValidated() {
+        return emailValidated;
+    }
+    public void setEmailValidated(boolean emailValidated) {
+        this.emailValidated = emailValidated;
+    }
+    public Date getCreated() {
+        return created;
+    }
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+    public void setCode(int code) {
+        this.code = code;
+    }
+    public boolean checkCode(int code) {
+        return code == this.code;
     }
 
 }
