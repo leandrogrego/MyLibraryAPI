@@ -3,10 +3,12 @@ package br.net.serviceapp.mylibrary.api.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,9 +29,11 @@ public class User {
     private String email;
     private boolean emailValidated;
     private Date lastAccess;
-    private List<Livro> books;
     private Date created = new Date();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Livro> books;
+    
     @JsonIgnore
 	private int code;
     
