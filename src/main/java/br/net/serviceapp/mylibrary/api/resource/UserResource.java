@@ -15,9 +15,6 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    @RequestHeader(value="Authorization") 
-    String token;
-
     @PostMapping
     public void save(@RequestBody User user){
         userService.save(user);
