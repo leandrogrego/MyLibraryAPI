@@ -43,4 +43,25 @@ public class UserService {
         else return null;
     }
 
+	public User socialLogin(
+			String socialId, 
+			String provider, 
+			String token, 
+			String name, 
+			String email, 
+			String avatar_url
+			) {
+    	User user = userRepository.findBySocialIdAndProvider(socialId, provider);
+    	if(user == null) {
+    		user = new User();
+    		user.setSocialId(socialId);
+    		user.setProvider(provider);
+    	}
+    	user.setToken(token);
+		user.setName(name);
+		user.setEmail(email);
+		user.setAvatar_url(avatar_url);
+    	save(user);
+    	return userRepository.findBySocialIdAndProvider(socialId, provider);
+	}
 }
