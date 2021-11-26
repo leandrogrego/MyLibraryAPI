@@ -1,4 +1,4 @@
-package br.net.serviceapp.mylibrary.tools;
+package br.net.serviceapp.mylibrary.api.tools;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

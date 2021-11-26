@@ -15,8 +15,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void save(User user){
-        userRepository.save(user);
+    public User save(User user){
+        return userRepository.save(user);
     }
 
     public void update(User user){
@@ -64,4 +64,8 @@ public class UserService {
     	save(user);
     	return userRepository.findBySocialIdAndProvider(socialId, provider);
 	}
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmailIgnoreCaseContaining(email);
+    }
 }

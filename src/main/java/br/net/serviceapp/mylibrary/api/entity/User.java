@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,19 +32,23 @@ public class User {
     private Date lastAccess;
     private Date created = new Date();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Livro> books;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Book> books;
+
+    @JsonIgnore
+    private String password = null;
     
     @JsonIgnore
-	private int code;
+	private String code;
     
     @JsonIgnore
     private String token;
 
-    public List<Livro> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
-    public void setBooks(List<Livro> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
     public Date getLastAccess() {
@@ -127,11 +132,23 @@ public class User {
     public void setCreated(Date created) {
         this.created = created;
     }
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
-    public boolean checkCode(int code) {
-        return code == this.code;
+    public boolean checkCode(String code) {
+        return code.equals(this.code);
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public void addBook(Book book) {
+        this.books.add(book);
     }
 
 }
