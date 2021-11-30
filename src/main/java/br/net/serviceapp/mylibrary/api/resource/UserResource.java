@@ -34,6 +34,9 @@ public class UserResource {
 		if(user == null){
 			user = new User();
 			user.setEmail(email);
+			int time = (int) new Date().getTime();
+			String token = Cript.hash(""+time+email);
+			user.setToken(token);
         }
 		user.setLastAccess(new Date());
 		return sendCode(user);
@@ -73,8 +76,9 @@ public class UserResource {
 		long time = user.getLastAccess().getTime();
 		int now = (int) ((new Date().getTime()-time)/1000/60);
 		if(user != null &&  user.checkCode(code) && now<=prazo){
-			String token = Cript.hash(time+email+code);
-			user.setToken(token);
+			//String token = Cript.hash(time+email+code);
+			//user.setToken(token);
+			String token = user.getToken();
 			user.setCode(null);
 			user.setEmailValidated(true);
 			user.setLastAccess(new Date());
@@ -82,6 +86,20 @@ public class UserResource {
 			return new Response(true, "Código Validado com sucesso!", token);
 		}
 		return new Response(false, "Código de validação inválido!", null);
+	}
+
+	//Desconectar todos os dispositivos
+	@DeleteMapping("/validate")
+	public Response logOut
+	(@RequestHeader(value="Authorization") String token
+	){
+		User user = userService.getByToken(token);
+		if(user !=  null) {
+			token = Cript.hash(token);
+			user.setToken(token);
+			userService.save(user);
+			return new Response(true, "LogOut efetuado com sucesso!", null);
+		} else return new Response(false, "Token inválido ou expirado!", null);
 	}
 
 	// Dados do usuario

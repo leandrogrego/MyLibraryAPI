@@ -27,6 +27,7 @@ public class Book {
     private String publishDate;
     private int pages;
     private String categories;
+    @Lob
     private String urlCover;
     private String barcode;
     private Date added = new Date();
